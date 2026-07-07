@@ -10,7 +10,7 @@ Students submit anonymous feedback — ideas, concerns, or suggestions about cam
 
 - `index.html` — the public submission form. Anyone can post; no one can read what others wrote.
 - `dashboard.html` — a private, sign-in–gated view for reviewing and deleting submissions. Restricted to a single authorized admin account and excluded from search engines (`noindex`).
-- `og-image.png` — social preview image used for link cards (LinkedIn, etc.).
+- `og-image.png , image.png` — social preview image used for link cards (LinkedIn, etc.).
 
 ## Tech stack
 
