@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAC Dashboard — Student Voice Board</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-900:#0B3B38;
+    --teal-700:#0F5E56;
+    --teal-500:#12857A;
+    --lime:#C6E92B;
+    --coral:#E8563E;
+    --coral-dark:#8C2F1F;
+    --purple-dark:#3A2A75;
+    --gold-dark:#7A5313;
+    --cream:#FAF7F0;
+    --ink:#12201D;
+    --ink-soft:#4B5E58;
+    --line: rgba(18,32,29,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--teal-900);
+    font-family:'Inter',sans-serif;
+    color:var(--cream);
+    min-height:100vh;
+  }
+  .wrap{ max-width:720px; margin:0 auto; padding:0 20px 60px; }
+
+  header{ padding:36px 0 22px; }
+  .eyebrow{
+    font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--lime); font-weight:700; margin:0 0 10px;
+  }
+  h1{
+    font-family:'Archivo Black',sans-serif;
+    font-size:28px; line-height:1.1; margin:0 0 8px; color:var(--cream);
+  }
+  header p{ font-size:14px; line-height:1.6; color:#CFE3DF; margin:0; }
+
+  .gate{
+    background:var(--cream); color:var(--ink);
+    border-radius:16px; padding:40px 24px; text-align:center; margin-top:20px;
+  }
+  .gate p{ color:var(--ink-soft); font-size:14px; margin:0 0 20px; }
+  .gbtn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:#fff; border:1.5px solid var(--line); color:var(--ink);
+    font-weight:600; font-size:14px; padding:10px 18px; border-radius:999px; cursor:pointer;
+  }
+  .gbtn:hover{ background:#F3F2EB; }
+  .denied{ color:var(--coral-dark); font-size:13px; margin-top:14px; display:none; }
+
+  .toolbar{ display:flex; align-items:center; justify-content:space-between; margin:18px 0 14px; }
+  .whoami{ font-size:12.5px; color:#B7D6D0; }
+  .signout{
+    background:transparent; border:1.5px solid rgba(255,255,255,.25); color:var(--cream);
+    font-size:12px; padding:6px 14px; border-radius:999px; cursor:pointer;
+  }
+
+  .filter-row{ display:flex; flex-wrap:wrap; gap:6px; margin:0 0 16px; }
+  .chip{
+    font-size:12px; font-weight:700; padding:6px 13px; border-radius:999px; cursor:pointer;
+    opacity:.55; background:#EFEEE5; color:var(--ink);
+  }
+  .chip.active{ opacity:1; background:var(--teal-500); color:#fff; }
+
+  .item{
+    background:var(--cream); border-radius:14px;
+    padding:16px 16px 14px; margin-bottom:12px;
+  }
+  .item-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+  .item-tag{
+    display:inline-block; font-size:11px; font-weight:700; padding:3px 10px;
+    border-radius:999px; color:var(--ink);
+  }
+  .item-tag[data-cat="Campus life"]{ background:#FBDCD5; color:var(--coral-dark); }
+  .item-tag[data-cat="Academics"]{ background:#DCEFEB; color:var(--teal-700); }
+  .item-tag[data-cat="Facilities"]{ background:#F5E7C6; color:var(--gold-dark); }
+  .item-tag[data-cat="AI & tech"]{ background:#E5DEF9; color:var(--purple-dark); }
+  .item-tag[data-cat="Other"]{ background:#E7E4DA; color:#4B4A42; }
+  .del-btn{
+    background:none; border:none; color:var(--ink-soft); cursor:pointer;
+    font-size:12px; padding:4px 8px; border-radius:6px;
+  }
+  .del-btn:hover{ background:#F1DEDA; color:var(--coral-dark); }
+  .item-text{ font-size:14.5px; line-height:1.55; color:var(--ink); margin:0; word-wrap:break-word; }
+  .item-time{ font-size:11.5px; color:var(--ink-soft); margin-top:6px; }
+
+  .empty{ text-align:center; padding:50px 16px; color:#B7D6D0; font-size:14px; }
+  .count{ font-size:13px; color:#B7D6D0; margin-bottom:14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Humber Downtown &middot; SAC internal</p>
+    <h1>Submissions dashboard</h1>
+    <p>Private view — only signed-in SAC members can see this. Not linked from the public board.</p>
+  </header>
+
+  <div class="gate" id="gate">
+    <p>Sign in with your SAC Google account to view submissions.</p>
+    <button class="gbtn" id="signinBtn">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21c0-1.4-.2-2.7-.4-4z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.1 8 3l6-6C34.6 5.1 29.6 3 24 3 15.6 3 8.4 7.8 6.3 14.7z"/><path fill="#4CAF50" d="M24 45c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.6C29.7 36 27 37 24 37c-5.2 0-9.6-3.3-11.3-8l-6.6 5.1C8.4 40.2 15.6 45 24 45z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4.1 5.6l6.6 5.6C41.5 36 44 30.5 44 24c0-1.4-.2-2.7-.4-3.5z"/></svg>
+      Sign in with Google
+    </button>
+    <p class="denied" id="deniedMsg">Signed in, but this Google account isn't authorized for this dashboard.</p>
+  </div>
+
+  <div id="app" style="display:none;">
+    <div class="toolbar">
+      <span class="whoami" id="whoami"></span>
+      <button class="signout" id="signoutBtn">Sign out</button>
+    </div>
+    <div class="count" id="countLabel">0 submissions</div>
+    <div class="filter-row" id="filterRow">
+      <div class="chip active" data-filter="All">All</div>
+      <div class="chip" data-filter="Campus life">Campus life</div>
+      <div class="chip" data-filter="Academics">Academics</div>
+      <div class="chip" data-filter="Facilities">Facilities</div>
+      <div class="chip" data-filter="AI & tech">AI &amp; tech</div>
+      <div class="chip" data-filter="Other">Other</div>
+    </div>
+    <div id="list"></div>
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script>
+(function(){
+  var FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDOF9y24R0R7ThikybzxedDo-SByG5zWdA",
+    authDomain: "student-voice-740e5.firebaseapp.com",
+    projectId: "student-voice-740e5",
+    storageBucket: "student-voice-740e5.firebasestorage.app",
+    messagingSenderId: "812186844469",
+    appId: "1:812186844469:web:272286c46da135c109e07c"
+  };
+  var COLLECTION = 'voices';
+  var ADMIN_EMAIL = 'haneenbasman@gmail.com';
+
+  firebase.initializeApp(FIREBASE_CONFIG);
+  var auth = firebase.auth();
+  var db = firebase.firestore();
+
+  var gate = document.getElementById('gate');
+  var deniedMsg = document.getElementById('deniedMsg');
+  var app = document.getElementById('app');
+  var whoami = document.getElementById('whoami');
+  var signinBtn = document.getElementById('signinBtn');
+  var signoutBtn = document.getElementById('signoutBtn');
+  var filterRow = document.getElementById('filterRow');
+  var list = document.getElementById('list');
+  var countLabel = document.getElementById('countLabel');
+
+  var items = [];
+  var activeFilter = 'All';
+  var unsubscribe = null;
+
+  function escapeHtml(str){
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+  function timeAgo(ts){
+    if(!ts) return 'just now';
+    var diff = Math.floor((Date.now() - ts) / 1000);
+    if(diff < 60) return 'just now';
+    if(diff < 3600) return Math.floor(diff/60) + 'm ago';
+    if(diff < 86400) return Math.floor(diff/3600) + 'h ago';
+    return Math.floor(diff/86400) + 'd ago';
+  }
+
+  signinBtn.addEventListener('click', function(){
+    deniedMsg.style.display = 'none';
+    var provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch(function(err){
+      console.error('Sign-in failed', err);
+    });
+  });
+
+  signoutBtn.addEventListener('click', function(){
+    if(unsubscribe) unsubscribe();
+    auth.signOut();
+  });
+
+  filterRow.addEventListener('click', function(e){
+    var chip = e.target.closest('.chip');
+    if(!chip) return;
+    var all = filterRow.querySelectorAll('.chip');
+    for(var i=0;i<all.length;i++) all[i].classList.remove('active');
+    chip.classList.add('active');
+    activeFilter = chip.getAttribute('data-filter');
+    render();
+  });
+
+  function render(){
+    var filtered = activeFilter === 'All' ? items : items.filter(function(i){ return i.category === activeFilter; });
+    countLabel.textContent = items.length + (items.length === 1 ? ' submission' : ' submissions');
+    if(filtered.length === 0){
+      list.innerHTML = '<div class="empty">No submissions yet.</div>';
+      return;
+    }
+    list.innerHTML = filtered.map(function(item){
+      return '<div class="item">' +
+        '<div class="item-top">' +
+          '<span class="item-tag" data-cat="' + item.category + '">' + item.category + '</span>' +
+          '<button class="del-btn" data-id="' + item.id + '">Delete</button>' +
+        '</div>' +
+        '<p class="item-text">' + escapeHtml(item.text) + '</p>' +
+        '<div class="item-time">' + timeAgo(item.ts) + '</div>' +
+      '</div>';
+    }).join('');
+    var delBtns = list.querySelectorAll('.del-btn');
+    for(var i=0;i<delBtns.length;i++){
+      delBtns[i].addEventListener('click', onDelete);
+    }
+  }
+
+  async function onDelete(e){
+    var id = e.currentTarget.getAttribute('data-id');
+    if(!confirm('Delete this submission? This cannot be undone.')) return;
+    try{
+      await db.collection(COLLECTION).doc(id).delete();
+    }catch(err){
+      console.error('Delete failed', err);
+      alert('Could not delete — check your connection and try again.');
+    }
+  }
+
+  function startListening(){
+    unsubscribe = db.collection(COLLECTION).orderBy('ts', 'desc').onSnapshot(function(snapshot){
+      items = snapshot.docs.map(function(doc){
+        var d = doc.data();
+        return {
+          id: doc.id,
+          text: d.text,
+          category: d.category,
+          ts: d.ts && d.ts.toMillis ? d.ts.toMillis() : Date.now()
+        };
+      });
+      render();
+    }, function(err){
+      console.error('Snapshot listener failed', err);
+      list.innerHTML = '<div class="empty">Could not load submissions. Make sure you are signed in with the authorized account.</div>';
+    });
+  }
+
+  auth.onAuthStateChanged(function(user){
+    if(user && user.email === ADMIN_EMAIL){
+      gate.style.display = 'none';
+      app.style.display = 'block';
+      whoami.textContent = 'Signed in as ' + user.email;
+      startListening();
+    } else {
+      if(unsubscribe){ unsubscribe(); unsubscribe = null; }
+      app.style.display = 'none';
+      gate.style.display = 'block';
+      if(user && user.email !== ADMIN_EMAIL){
+        deniedMsg.style.display = 'block';
+        auth.signOut();
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>

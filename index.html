@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Voice Board — Humber Downtown SAC</title>
+<meta name="description" content="An anonymous space for Humber Downtown students to share ideas, concerns, and feedback with the Student Advisory Committee.">
+<meta name="theme-color" content="#0B3B38">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Humber Downtown SAC">
+<meta property="og:title" content="Student Voice Board — Humber Downtown SAC">
+<meta property="og:description" content="Anonymous and real. Drop an idea or concern about campus life, academics, facilities, or anything else — it goes straight to the Student Advisory Committee.">
+<meta property="og:url" content="https://humber-student-voice.netlify.app/">
+<meta property="og:image" content="https://humber-student-voice.netlify.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Student Voice Board — Humber Downtown SAC">
+<meta name="twitter:description" content="Anonymous and real. Drop an idea or concern — it goes straight to the Student Advisory Committee.">
+<meta name="twitter:image" content="https://humber-student-voice.netlify.app/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-900:#0B3B38;
+    --teal-700:#0F5E56;
+    --teal-500:#12857A;
+    --lime:#C6E92B;
+    --coral:#E8563E;
+    --coral-dark:#8C2F1F;
+    --purple:#6C4FD1;
+    --purple-dark:#3A2A75;
+    --gold:#E8A63E;
+    --gold-dark:#7A5313;
+    --cream:#FAF7F0;
+    --ink:#12201D;
+    --ink-soft:#4B5E58;
+    --line: rgba(18,32,29,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--teal-900);
+    font-family:'Inter',sans-serif;
+    color:var(--cream);
+    min-height:100vh;
+  }
+  .wrap{ max-width:640px; margin:0 auto; padding:0 20px 60px; }
+
+  header{ padding:40px 0 28px; position:relative; }
+  .eyebrow{
+    font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--lime); font-weight:700; margin:0 0 10px;
+  }
+  h1{
+    font-family:'Archivo Black',sans-serif;
+    font-size:34px; line-height:1.08; margin:0 0 12px; color:var(--cream);
+  }
+  header p{ font-size:15px; line-height:1.6; color:#CFE3DF; margin:0; max-width:480px; }
+  .squiggle{ position:absolute; top:8px; right:0; width:70px; opacity:0.9; }
+
+  .card{
+    background:var(--cream); color:var(--ink);
+    border-radius:16px; padding:22px 22px 20px;
+    margin-bottom:22px;
+  }
+
+  .cat-row{ display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 14px; }
+  .chip{
+    font-size:12.5px; font-weight:700; padding:6px 14px 6px 12px;
+    border-radius:999px; cursor:pointer; border:2px solid transparent;
+    display:inline-flex; align-items:center; gap:6px; transition:transform .12s ease;
+  }
+  .chip:active{ transform:scale(0.96); }
+  .chip.on{ border-color:var(--ink); }
+  .chip[data-cat="Campus life"]{ background:#FBDCD5; color:var(--coral-dark); }
+  .chip[data-cat="Academics"]{ background:#DCEFEB; color:var(--teal-700); }
+  .chip[data-cat="Facilities"]{ background:#F5E7C6; color:var(--gold-dark); }
+  .chip[data-cat="AI & tech"]{ background:#E5DEF9; color:var(--purple-dark); }
+  .chip[data-cat="Other"]{ background:#E7E4DA; color:#4B4A42; }
+
+  textarea{
+    width:100%; min-height:88px; resize:vertical;
+    border:1.5px solid var(--line); border-radius:10px;
+    padding:12px 14px; font-family:'Inter',sans-serif; font-size:14.5px;
+    color:var(--ink); background:#fff; outline:none;
+  }
+  textarea:focus{ border-color:var(--teal-500); }
+
+  .row-bottom{ display:flex; align-items:center; justify-content:space-between; margin-top:14px; }
+  .hint{ font-size:12px; color:var(--ink-soft); }
+  button.submit{
+    background:var(--coral); color:#fff; border:none;
+    font-weight:700; font-size:14px; padding:11px 20px;
+    border-radius:999px; cursor:pointer;
+  }
+  button.submit:disabled{ opacity:0.5; cursor:default; }
+  button.submit:hover:not(:disabled){ background:var(--coral-dark); }
+
+  .setup-banner{
+    background:#3A2A0A; border:1.5px solid var(--gold); color:#F5E1B0;
+    border-radius:12px; padding:14px 16px; margin-bottom:18px; font-size:13px; line-height:1.6;
+  }
+  .setup-banner code{ background:rgba(0,0,0,.25); padding:1px 5px; border-radius:4px; }
+
+  .thanks{
+    background:var(--cream); color:var(--ink);
+    border-radius:16px; padding:32px 24px; text-align:center;
+  }
+  .thanks .big{ font-size:38px; margin-bottom:6px; }
+  .thanks h2{ font-family:'Archivo Black',sans-serif; font-size:20px; margin:0 0 8px; }
+  .thanks p{ font-size:14px; color:var(--ink-soft); margin:0 0 18px; line-height:1.6; }
+  .thanks button{
+    background:transparent; border:1.5px solid var(--teal-500); color:var(--teal-700);
+    font-weight:700; font-size:13px; padding:9px 16px; border-radius:999px; cursor:pointer;
+  }
+
+  footer{ text-align:center; padding-top:8px; }
+  footer p{ font-size:12px; color:#7FA69E; margin:0; }
+
+  @media (max-width:420px){
+    h1{ font-size:27px; }
+    .squiggle{ display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <svg class="squiggle" viewBox="0 0 70 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 50C10 20 22 55 30 30C38 5 48 45 55 25C60 10 65 20 68 8" stroke="#C6E92B" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+    <p class="eyebrow">Humber Downtown &middot; SAC Summer '26</p>
+    <h1>Student Voice Board</h1>
+    <p>Anonymous and real. Drop an idea or concern below — it goes straight to the SAC so we know what to raise first.</p>
+  </header>
+
+  <div class="setup-banner" id="setupBanner" style="display:none;">
+    ⚠ This board isn't connected yet. Open this file, find <code>FIREBASE_CONFIG</code> near the bottom of the HTML, and paste in your Firebase project config.
+  </div>
+
+  <div class="card" id="formCard">
+    <div class="cat-row" id="catRow">
+      <div class="chip" data-cat="Campus life">Campus life</div>
+      <div class="chip" data-cat="Academics">Academics</div>
+      <div class="chip" data-cat="Facilities">Facilities</div>
+      <div class="chip" data-cat="AI & tech">AI &amp; tech</div>
+      <div class="chip" data-cat="Other">Other</div>
+    </div>
+    <textarea id="feedbackText" maxlength="400" placeholder="What's something that would make campus life better for you?"></textarea>
+    <div class="row-bottom">
+      <span class="hint" id="charHint">0 / 400 &middot; fully anonymous</span>
+      <button class="submit" id="submitBtn" disabled>Share it</button>
+    </div>
+  </div>
+
+  <div class="thanks" id="thanksCard" style="display:none;">
+    <div class="big">&#128172;</div>
+    <h2>Got it — thank you.</h2>
+    <p>Your note goes straight to the Student Advisory Committee. It's anonymous and only the SAC can read submissions.</p>
+    <button id="againBtn">Share another</button>
+  </div>
+
+  <footer>
+    <p>Built for the Humber Downtown Student Advisory Committee &middot; your voice shapes the agenda</p>
+  </footer>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+
+  // ====================================================================
+  // Firebase project config — from Project settings > Your apps.
+  // ====================================================================
+  var FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDOF9y24R0R7ThikybzxedDo-SByG5zWdA",
+    authDomain: "student-voice-740e5.firebaseapp.com",
+    projectId: "student-voice-740e5",
+    storageBucket: "student-voice-740e5.firebasestorage.app",
+    messagingSenderId: "812186844469",
+    appId: "1:812186844469:web:272286c46da135c109e07c"
+  };
+  var COLLECTION = 'voices';
+  // ====================================================================
+
+  var selectedCat = null;
+  var db = null;
+
+  var catRow = document.getElementById('catRow');
+  var textarea = document.getElementById('feedbackText');
+  var charHint = document.getElementById('charHint');
+  var submitBtn = document.getElementById('submitBtn');
+  var setupBanner = document.getElementById('setupBanner');
+  var formCard = document.getElementById('formCard');
+  var thanksCard = document.getElementById('thanksCard');
+  var againBtn = document.getElementById('againBtn');
+
+  function isConfigured(){
+    return FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey !== 'PASTE_ME';
+  }
+
+  catRow.addEventListener('click', function(e){
+    var chip = e.target.closest('.chip');
+    if(!chip) return;
+    var cat = chip.getAttribute('data-cat');
+    if(selectedCat === cat){
+      selectedCat = null;
+      chip.classList.remove('on');
+    } else {
+      var all = catRow.querySelectorAll('.chip');
+      for(var i=0;i<all.length;i++) all[i].classList.remove('on');
+      selectedCat = cat;
+      chip.classList.add('on');
+    }
+    updateSubmitState();
+  });
+
+  textarea.addEventListener('input', function(){
+    charHint.textContent = textarea.value.length + ' / 400 · fully anonymous';
+    updateSubmitState();
+  });
+
+  function updateSubmitState(){
+    submitBtn.disabled = !(selectedCat && textarea.value.trim().length > 3) || !isConfigured();
+  }
+
+  submitBtn.addEventListener('click', async function(){
+    if(!db) return;
+    var text = textarea.value.trim();
+    if(!selectedCat || text.length < 4) return;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    try{
+      await db.collection(COLLECTION).add({
+        text: text,
+        category: selectedCat,
+        votes: 0,
+        ts: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      formCard.style.display = 'none';
+      thanksCard.style.display = 'block';
+    }catch(err){
+      console.error('Submit failed', err);
+      alert('Could not submit — check your connection and try again.');
+      submitBtn.textContent = 'Share it';
+      updateSubmitState();
+    }
+  });
+
+  againBtn.addEventListener('click', function(){
+    textarea.value = '';
+    selectedCat = null;
+    var chips = catRow.querySelectorAll('.chip');
+    for(var i=0;i<chips.length;i++) chips[i].classList.remove('on');
+    charHint.textContent = '0 / 400 · fully anonymous';
+    submitBtn.textContent = 'Share it';
+    updateSubmitState();
+    thanksCard.style.display = 'none';
+    formCard.style.display = 'block';
+  });
+
+  function init(){
+    if(!isConfigured()){
+      setupBanner.style.display = 'block';
+      return;
+    }
+    try{
+      firebase.initializeApp(FIREBASE_CONFIG);
+      db = firebase.firestore();
+    }catch(e){
+      console.error('Firebase init failed', e);
+      setupBanner.style.display = 'block';
+      return;
+    }
+    updateSubmitState();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
