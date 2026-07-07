@@ -2,7 +2,7 @@
 
 An anonymous feedback tool built for the Humber Downtown Student Advisory Committee (SAC), Summer '26.
 
-**Live site:** https://humber-student-voice.netlify.app/
+**Live site:** https://humber-student-voice.netlify.app/?v=2
 
 ## What it does
 
